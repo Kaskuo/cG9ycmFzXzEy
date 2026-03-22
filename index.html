@@ -6,6 +6,7 @@
 <title>Porras — Anime</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <!-- Firebase -->
 <script type="module">
@@ -57,79 +58,170 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:var(--r-pill)}
 
 /* ══════════════════════════════════════════
-   LAUNCH / SPLASH PAGE
+   LAUNCH PAGE — HIDIVE style
 ══════════════════════════════════════════ */
 #launch{
   position:fixed;inset:0;z-index:9999;
   background:var(--bg);
   display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
   overflow:hidden;
   transition:opacity .5s ease, transform .5s ease;
 }
-#launch.hide{opacity:0;pointer-events:none;transform:scale(1.04)}
+#launch.hide{opacity:0;pointer-events:none;transform:scale(1.03)}
 
-/* Centered single-column */
-.launch-inner{
-  position:relative;z-index:1;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  text-align:center;
-  padding:40px 24px;
-  width:100%;max-width:600px;
+/* Full-screen backdrop */
+.launch-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center 20%;
+  transition:opacity 1s ease;
 }
-.launch-headline{
-  font-family:var(--font2);
-  font-size:clamp(28px,4.5vw,56px);
-  font-weight:800;line-height:1.12;
-  letter-spacing:-.5px;
-  margin-bottom:16px;
+.launch-bg-grad{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    180deg,
+    rgba(11,12,16,.25) 0%,
+    rgba(11,12,16,.15) 40%,
+    rgba(11,12,16,.7) 70%,
+    rgba(11,12,16,.98) 100%
+  );
 }
-.launch-headline .accent{color:var(--accent-h)}
-
-.launch-desc{
-  font-size:14px;line-height:1.85;color:var(--text2);
-  max-width:480px;margin-bottom:36px;
+.launch-bg-grad2{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(11,12,16,.75) 0%,transparent 60%);
 }
 
-/* Launch search bar */
-.launch-search-wrap{
-  width:100%;max-width:480px;
-  display:flex;flex-direction:column;gap:12px;
-  margin-bottom:0;
+/* Top bar inside launch */
+.launch-topbar{
+  position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 32px;flex-shrink:0;
 }
-.launch-search-row{
-  display:flex;gap:10px;align-items:center;
-  background:var(--bg2);border:1.5px solid var(--border2);
-  border-radius:var(--r-pill);padding:6px 6px 6px 20px;
-  transition:border-color var(--trans);
+.launch-logo{
+  font-family:var(--font2);font-size:22px;font-weight:800;
+  letter-spacing:-.5px;color:var(--text);
 }
-.launch-search-row:focus-within{border-color:var(--accent)}
-.launch-search-row svg{color:var(--text3);flex-shrink:0;width:16px;height:16px}
-.launch-search-row input{
-  flex:1;background:none;border:none;outline:none;
-  color:var(--text);font-family:var(--font);font-size:14px;
-}
-.launch-search-row input::placeholder{color:var(--text3)}
-.launch-enter-btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:10px 22px;border-radius:var(--r-pill);
+.launch-logo span{color:var(--accent-h)}
+.launch-top-btns{display:flex;gap:10px;align-items:center}
+.launch-signin-btn{
+  display:flex;align-items:center;gap:6px;
+  background:var(--accent);color:white;border:none;
+  border-radius:var(--r-pill);padding:9px 22px;
   font-family:var(--font);font-size:13.5px;font-weight:700;
-  cursor:pointer;transition:all var(--trans);border:none;
-  background:var(--accent);color:white;flex-shrink:0;white-space:nowrap;
+  cursor:pointer;transition:all var(--trans);
 }
-.launch-enter-btn:hover{background:var(--accent-h);box-shadow:0 6px 20px var(--accent-glow)}
+.launch-signin-btn:hover{background:var(--accent-h)}
 
-/* Launch search dropdown */
+/* Center hero content */
+.launch-hero{
+  flex:1;position:relative;z-index:2;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 48px 28px;
+  min-height:0;
+}
+.launch-hero-eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--accent-h);
+  margin-bottom:12px;opacity:.9;
+}
+.launch-hero-title{
+  font-family:var(--font2);
+  font-size:clamp(32px,5vw,72px);
+  font-weight:800;line-height:1.05;
+  letter-spacing:-.5px;
+  margin-bottom:14px;
+  text-shadow:0 2px 20px rgba(0,0,0,.5);
+  max-width:700px;
+}
+.launch-hero-meta{
+  display:flex;align-items:center;gap:14px;
+  font-size:13px;color:rgba(255,255,255,.7);
+  margin-bottom:24px;flex-wrap:wrap;
+}
+.launch-hero-genre{
+  font-size:11px;font-weight:700;
+  background:rgba(255,255,255,.12);
+  padding:3px 10px;border-radius:var(--r-pill);
+  color:rgba(255,255,255,.85);
+}
+.launch-hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:32px}
+.launch-watch-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--accent);color:white;border:none;
+  border-radius:var(--r-pill);padding:13px 30px;
+  font-family:var(--font);font-size:14px;font-weight:700;
+  cursor:pointer;transition:all var(--trans);
+  box-shadow:0 8px 28px rgba(108,99,255,.45);
+}
+.launch-watch-btn:hover{background:var(--accent-h);transform:translateY(-1px)}
+.launch-watch-btn svg{width:14px;height:14px}
+.launch-search-pill{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.1);backdrop-filter:blur(12px);
+  border:1.5px solid rgba(255,255,255,.18);
+  border-radius:var(--r-pill);padding:10px 18px 10px 16px;
+  cursor:text;transition:all var(--trans);
+  width:260px;
+}
+.launch-search-pill:focus-within{
+  background:rgba(255,255,255,.15);
+  border-color:rgba(255,255,255,.35);
+  width:300px;
+}
+.launch-search-pill svg{color:rgba(255,255,255,.6);flex-shrink:0;width:15px;height:15px}
+.launch-search-pill input{
+  background:none;border:none;outline:none;
+  color:white;font-family:var(--font);font-size:13.5px;
+  width:100%;
+}
+.launch-search-pill input::placeholder{color:rgba(255,255,255,.45)}
+
+/* Search dropdown on launch */
 .launch-search-drop{
-  position:absolute;top:calc(100% + 8px);left:-20px;right:-100px;
+  position:absolute;bottom:calc(100% + 8px);left:0;right:0;
   background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r-lg);
   overflow:hidden;z-index:100;max-height:340px;overflow-y:auto;
-  box-shadow:0 16px 48px rgba(0,0,0,.6);display:none;
-  text-align:left;
+  box-shadow:0 -16px 48px rgba(0,0,0,.6);display:none;text-align:left;
 }
 .launch-search-drop.open{display:block}
 .launch-search-outer{position:relative;flex:1;display:flex;align-items:center;gap:8px}
+
+/* Dot indicators */
+.launch-dots{display:flex;gap:6px;margin-bottom:20px}
+.launch-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:all var(--trans);border:none;padding:0}
+.launch-dot.active{width:20px;border-radius:var(--r-pill);background:white}
+
+/* Bottom strip — trending titles */
+.launch-strip{
+  position:relative;z-index:2;
+  padding:0 48px 28px;flex-shrink:0;
+}
+.launch-strip-label{
+  font-size:11px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:rgba(255,255,255,.45);
+  margin-bottom:12px;
+}
+.launch-strip-row{
+  display:flex;gap:12px;overflow-x:auto;
+  padding-bottom:4px;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.launch-strip-row::-webkit-scrollbar{display:none}
+.launch-strip-card{
+  flex-shrink:0;width:160px;cursor:pointer;
+  border-radius:var(--r-md);overflow:hidden;
+  background:var(--bg3);position:relative;
+  border:2px solid transparent;transition:all var(--trans);
+}
+.launch-strip-card:hover{border-color:rgba(255,255,255,.3);transform:translateY(-3px)}
+.launch-strip-card.active-strip{border-color:var(--accent)}
+.launch-strip-card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.launch-strip-card-info{padding:6px 8px 8px}
+.launch-strip-title{font-size:11px;font-weight:600;color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.launch-strip-ep{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
+/* Watched progress bar on strip card */
+.launch-strip-prog{height:2px;background:rgba(255,255,255,.12);position:absolute;bottom:0;left:0;right:0}
+.launch-strip-prog-fill{height:100%;background:var(--accent)}
 
 /* ══════════════════════════════════════════
    MAIN APP — TOP NAV LAYOUT
@@ -491,23 +583,64 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   overflow:hidden;
 }
 .sched-card-sub{font-size:11.5px;color:var(--text3)}
-.wl-header{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+
+/* ── MOBILE BOTTOM NAV ── */
+.mobile-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  height:58px;background:var(--bg1);border-top:1px solid var(--border);
+  z-index:200;grid-template-columns:repeat(5,1fr);align-items:center;
+}
+.mn-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:8px 2px;cursor:pointer;position:relative;
+  color:var(--text3);transition:color var(--trans);font-size:10px;font-weight:600;
+}
+.mn-item svg{width:20px;height:20px}
+.mn-item.active{color:var(--accent-h)}
+.mn-badge{
+  position:absolute;top:5px;right:calc(50% - 18px);
+  background:var(--accent);color:white;font-size:8px;font-weight:700;
+  padding:1px 5px;border-radius:99px;line-height:1.5;min-width:14px;text-align:center;
+}
+
+/* ── HISTORY PAGE ── */
+.history-day{margin-bottom:32px}
+.history-day-label{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.history-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.history-card{position:relative;cursor:pointer;border-radius:var(--r-md);overflow:hidden;background:var(--bg2);transition:transform var(--trans)}
+.history-card:hover{transform:translateY(-3px)}
+.history-thumb{aspect-ratio:16/9;overflow:hidden;position:relative;background:var(--bg3)}
+.history-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+.history-card:hover .history-thumb img{transform:scale(1.04)}
+.history-prog{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.15)}
+.history-prog-fill{height:100%;background:var(--accent)}
+.history-time-left{position:absolute;bottom:8px;right:7px;background:rgba(0,0,0,.78);color:rgba(255,255,255,.9);font-size:9px;font-weight:600;font-family:var(--mono);padding:2px 6px;border-radius:3px}
+.history-ep-badge{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.72);color:white;font-size:9px;font-weight:700;font-family:var(--mono);padding:2px 7px;border-radius:3px}
+.history-info{padding:8px 10px 10px}
+.history-title{font-size:12.5px;font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.history-sub{font-size:11px;color:var(--text3)}
+
+/* ── WATCHLIST — HIDIVE row style ── */
+.wl-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
 .wl-title{font-size:22px;font-weight:800;font-family:var(--font2)}
 .wl-tabs{display:flex;gap:6px;flex-wrap:wrap}
 .wl-tab{padding:7px 16px;border-radius:var(--r-pill);font-size:12.5px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);color:var(--text2);background:var(--bg2);transition:all var(--trans)}
 .wl-tab:hover{border-color:var(--accent);color:var(--accent-h)}
 .wl-tab.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-h)}
-.wl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
-.wl-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all var(--trans)}
-.wl-card:hover{border-color:rgba(108,99,255,.4);transform:translateY(-3px)}
-.wl-cover{height:120px;overflow:hidden;position:relative}
-.wl-cover img{width:100%;height:100%;object-fit:cover}
-.wl-cover-grad{position:absolute;inset:0;background:linear-gradient(0deg,rgba(17,19,24,.9) 0%,transparent 60%)}
-.wl-body{padding:12px}
-.wl-card-title{font-size:13.5px;font-weight:600;margin-bottom:6px}
-.wl-prog-bar{height:3px;background:var(--bg4);border-radius:var(--r-pill);overflow:hidden;margin-bottom:4px}
-.wl-prog-fill{height:100%;background:var(--accent)}
-.wl-prog-text{font-size:10.5px;color:var(--text3);margin-bottom:8px}
+.wl-list{display:flex;flex-direction:column;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.wl-row{display:flex;gap:14px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background var(--trans)}
+.wl-row:hover{background:var(--bg3)}
+.wl-row:last-child{border-bottom:none}
+.wl-row-thumb{width:108px;height:60px;border-radius:var(--r-sm);overflow:hidden;flex-shrink:0;background:var(--bg3);position:relative}
+.wl-row-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.wl-row-prog{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.15)}
+.wl-row-prog-fill{height:100%;background:var(--accent)}
+.wl-row-info{flex:1;min-width:0}
+.wl-row-title{font-size:14px;font-weight:600;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wl-row-meta{font-size:12px;color:var(--text2);display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:4px}
+.wl-row-time{font-size:11.5px;color:var(--text3);font-family:var(--mono)}
+.wl-status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.wsd-watching{background:var(--accent-h)}.wsd-completed{background:var(--green)}.wsd-ptw{background:var(--amber)}.wsd-dropped{background:var(--red)}
 .ws{font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill)}
 .ws-watching{background:rgba(108,99,255,.2);color:var(--accent-h)}
 .ws-completed{background:rgba(34,197,94,.2);color:#4ade80}
@@ -726,48 +859,85 @@ video#player-vid{width:100%;height:100%;background:#000;display:block;object-fit
   .nav-item span{display:none}
   .nav-item{padding:6px 9px}
   .topnav-div{margin:0 4px}
+  .launch-hero{padding:0 24px 20px}
+  .launch-strip{padding:0 24px 20px}
+  .launch-topbar{padding:16px 24px}
+  .launch-hero-title{font-size:clamp(26px,6vw,48px)}
+  .launch-search-pill{width:200px}
+  .launch-search-pill:focus-within{width:240px}
+  .launch-strip-card{width:130px}
 }
-@media(max-width:600px){
-  .content{padding:16px 14px 50px}
+@media(max-width:700px){
+  /* Hide desktop topnav links, show mobile bottom nav */
+  .topnav .nav-item:not(.search-outer,.sign-btn,#auth-btn,#user-menu-btn,#notif-btn){display:none}
+  .topnav-div{display:none}
+  .topnav-gap{display:none}
+  .mobile-nav{display:grid}
+  .content{padding:16px 14px 80px} /* extra bottom for mobile nav */
   .anime-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px}
   .sched-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px}
+  .history-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
   .profile-stats{grid-template-columns:1fr 1fr}
   .adm-stats{grid-template-columns:1fr 1fr}
   .ep-thumb-wrap{width:110px;height:62px}
-  .topnav-logo .logo-text{display:none}
+  .wl-row-thumb{width:80px;height:45px}
+  .detail-hero{height:auto}
+  .detail-hero-content{flex-direction:column;padding:16px}
+  .detail-poster{width:100px;height:140px}
+}
+@media(min-width:701px){
+  .mobile-nav{display:none!important}
 }
 </style>
 </head>
 <body>
 
 <!-- ══════════════════════════════════════
-     LAUNCH / SPLASH PAGE
+     LAUNCH PAGE — HIDIVE style
 ══════════════════════════════════════ -->
 <div id="launch">
-  <div class="launch-inner">
-    <div class="launch-headline">
-      Your anime.<br>
-      <span class="accent">All in one place.</span>
+  <!-- Backgrounds (crossfade) -->
+  <div class="launch-bg" id="launch-bg-a"></div>
+  <div class="launch-bg" id="launch-bg-b" style="opacity:0"></div>
+  <div class="launch-bg-grad"></div>
+  <div class="launch-bg-grad2"></div>
+
+  <!-- Top bar -->
+  <div class="launch-topbar">
+    <div class="launch-logo">Por<span>ras</span></div>
+    <div class="launch-top-btns">
+      <button class="launch-signin-btn" onclick="openAuth('login');enterApp('')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Sign In
+      </button>
     </div>
-    <div class="launch-desc">
-      Stream, track and discover anime from a single dashboard.
-      Full metadata from MyAnimeList &amp; AniList — scores, ranks,
-      episodes, studios, producers and more.
-      Save your watchlist, mark progress, and get real-time airing alerts.
-    </div>
-    <!-- Search bar + Enter button -->
-    <div class="launch-search-wrap">
-      <div class="launch-search-row">
+  </div>
+
+  <!-- Hero content -->
+  <div class="launch-hero">
+    <div class="launch-dots" id="launch-dots"></div>
+    <div class="launch-hero-eyebrow">Now Trending</div>
+    <div class="launch-hero-title" id="launch-title">Loading…</div>
+    <div class="launch-hero-meta" id="launch-meta"></div>
+    <div class="launch-hero-actions">
+      <button class="launch-watch-btn" id="launch-watch-btn" onclick="launchWatchNow()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
+        Watch Now
+      </button>
+      <!-- Search pill -->
+      <div class="launch-search-pill">
         <div class="launch-search-outer" id="launch-search-outer">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
           <input type="text" id="launch-search-input" placeholder="Search any anime…" autocomplete="off" onkeydown="if(event.key==='Enter')launchEnter()">
           <div class="launch-search-drop" id="launch-search-drop"></div>
         </div>
-        <button class="launch-enter-btn" onclick="launchEnter()">
-          Enter
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
       </div>
+    </div>
+
+    <!-- Bottom strip -->
+    <div class="launch-strip">
+      <div class="launch-strip-label">Trending Now</div>
+      <div class="launch-strip-row" id="launch-strip-row"></div>
     </div>
   </div>
 </div>
@@ -800,6 +970,10 @@ video#player-vid{width:100%;height:100%;background:#000;display:block;object-fit
     <div class="nav-item" id="nav-favorites" data-page="favorites" onclick="navigate('favorites',this)" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       <span>Favorites</span>
+    </div>
+    <div class="nav-item" id="nav-history" data-page="history" onclick="navigate('history',this)" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>History</span>
     </div>
     <div class="nav-item" id="nav-profile" data-page="profile" onclick="navigate('profile',this)" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -915,7 +1089,16 @@ video#player-vid{width:100%;height:100%;background:#000;display:block;object-fit
             <div class="wl-tab" onclick="switchWlTab(this,'dropped')">Dropped</div>
           </div>
         </div>
-        <div class="wl-grid" id="wl-grid"></div>
+        <div class="wl-list" id="wl-grid"></div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="page" id="page-history">
+        <div class="section-header" style="margin-bottom:24px">
+          <div class="section-title">Watch History</div>
+          <div style="font-size:12px;color:var(--text3);cursor:pointer" onclick="clearHistory()">Clear all</div>
+        </div>
+        <div id="history-body"></div>
       </div>
 
       <!-- FAVORITES -->
@@ -982,8 +1165,9 @@ video#player-vid{width:100%;height:100%;background:#000;display:block;object-fit
             <div class="mal-meta-panel" id="mal-panel" style="display:none;margin-top:24px">
               <div class="mal-meta-title">
                 Full Metadata
-                <span class="mal-badge">MAL</span>
-                <span class="mal-badge" style="background:#02a9ff">AniList</span>
+                <span class="mal-badge" style="background:#f47521">CR</span>
+                <span class="mal-badge" style="background:#1a3a6e">Funimation</span>
+                <span class="mal-badge" style="background:#00b2ff">HIDIVE</span>
               </div>
               <div class="mal-grid" id="mal-grid"></div>
               <div class="mal-scores" id="mal-scores"></div>
@@ -1056,6 +1240,31 @@ video#player-vid{width:100%;height:100%;background:#000;display:block;object-fit
   </main>
 </div><!-- /app -->
 
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-nav" id="mobile-nav">
+  <div class="mn-item active" id="mn-home" onclick="navigate('home');setMobileNav('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </div>
+  <div class="mn-item" id="mn-browse" onclick="navigate('browse');setMobileNav('browse')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    Browse
+  </div>
+  <div class="mn-item" id="mn-schedule" onclick="navigate('schedule');setMobileNav('schedule')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Schedule
+  </div>
+  <div class="mn-item" id="mn-watchlist" onclick="navigate('watchlist');setMobileNav('watchlist')" style="position:relative">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    List
+    <span class="mn-badge" id="mn-wl-badge" style="display:none">0</span>
+  </div>
+  <div class="mn-item" id="mn-profile" onclick="navigate('profile');setMobileNav('profile')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Profile
+  </div>
+</nav>
+
 <!-- DIM OVERLAY -->
 <div class="player-dim" id="player-dim" onclick="closePlayer()"></div>
 
@@ -1104,10 +1313,9 @@ video#player-vid{width:100%;height:100%;background:#000;display:block;object-fit
 <div class="modal-overlay" id="auth-modal">
   <div class="modal">
     <div class="modal-close" onclick="closeModal('auth-modal')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
-    <div class="modal-logo"><div class="logo-mark">P</div><span class="logo-text">Por<em>ras</em></span></div>
     <div id="auth-view-login">
       <div class="modal-title">Welcome back</div>
-      <div class="modal-sub">Sign in to your Porras account</div>
+      <div class="modal-sub">Sign in to your account</div>
       <div class="form-error" id="login-error"></div>
       <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="login-email" type="email" placeholder="you@email.com"></div>
       <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="login-password" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -1123,6 +1331,8 @@ video#player-vid{width:100%;height:100%;background:#000;display:block;object-fit
       <div class="form-group"><label class="form-label">Display Name</label><input class="form-input" id="signup-name" type="text" placeholder="Your name"></div>
       <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="signup-email" type="email" placeholder="you@email.com"></div>
       <div class="form-group"><label class="form-label">Password</label><input class="form-input" id="signup-password" type="password" placeholder="Min. 8 characters" onkeydown="if(event.key==='Enter')doSignup()"></div>
+      <!-- Cloudflare Turnstile — replace data-sitekey with your key from dash.cloudflare.com/turnstile -->
+      <div class="cf-turnstile" id="cf-turnstile" data-sitekey="0x4AAAAAAA_REPLACE_WITH_YOUR_SITEKEY" data-theme="dark" data-callback="onTurnstileSuccess" style="margin:12px 0"></div>
       <button class="form-btn form-btn-accent" onclick="doSignup()">Create Account</button>
       <div class="form-divider"><span>or</span></div>
       <button class="form-btn form-btn-google" onclick="doGoogleLogin()"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Continue with Google</button>
@@ -1187,9 +1397,9 @@ function waitFb(cb){const iv=setInterval(()=>{if(window._fb){clearInterval(iv);c
 function enterApp(searchQuery){
   $('launch').classList.add('hide');
   setTimeout(()=>{$('launch').style.display='none';},500);
+  sessionStorage.setItem('porras_entered','1');
   trackPage('enter_app');
   if(searchQuery){
-    // pre-fill main search and trigger it
     $('search-input').value=searchQuery;
     $('search-input').dispatchEvent(new Event('input'));
   }
@@ -1233,12 +1443,98 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('click',e=>{if(!e.target.closest('#launch-search-outer'))$('launch-search-drop').classList.remove('open');});
 });
 
+// ═══════════════════════════════════════════════
+// LAUNCH PAGE — HIDIVE style hero + strip
+// ═══════════════════════════════════════════════
+let launchAnimes=[], launchIdx=0, launchBgTimer=null;
+let _launchBgActive='a'; // which bg div is visible
+
 async function initLaunchFeed(){
-  // feed removed — no-op
+  try{
+    const data=await fetchTrending('WINTER',2025);
+    launchAnimes=data.filter(a=>a.bannerImage||a.coverImage?.extraLarge).slice(0,8);
+    if(!launchAnimes.length)return;
+    setLaunchHero(0);
+    buildLaunchStrip();
+    startLaunchTimer();
+  }catch(e){/* silently fail — launch still works */}
 }
 
-// ═══════════════════════════════════════════════
-// ANILIST API
+function setLaunchHero(idx,instant=false){
+  launchIdx=idx;
+  const a=launchAnimes[idx];if(!a)return;
+  const title=a.title?.english||a.title?.romaji||'Unknown';
+  const imgUrl=a.bannerImage||a.coverImage?.extraLarge||a.coverImage?.large||'';
+
+  // Crossfade backgrounds
+  const bgA=$('launch-bg-a'),bgB=$('launch-bg-b');
+  const next=_launchBgActive==='a'?bgB:bgA;
+  const cur=_launchBgActive==='a'?bgA:bgB;
+  next.style.backgroundImage=`url(${imgUrl})`;
+  if(instant){
+    cur.style.opacity='0';next.style.opacity='1';
+  }else{
+    next.style.transition='opacity 1s ease';cur.style.transition='opacity 1s ease';
+    next.style.opacity='1';cur.style.opacity='0';
+  }
+  _launchBgActive=_launchBgActive==='a'?'b':'a';
+
+  // Title + meta
+  $('launch-title').textContent=title;
+  const meta=$('launch-meta');meta.innerHTML='';
+  if(a.averageScore){const s=document.createElement('span');s.textContent='★ '+(a.averageScore/10).toFixed(1);meta.appendChild(s);}
+  if(a.startDate?.year){const y=document.createElement('span');y.textContent=a.startDate.year;meta.appendChild(y);}
+  (a.genres||[]).slice(0,3).forEach(g=>{const p=document.createElement('span');p.className='launch-hero-genre';p.textContent=g;meta.appendChild(p);});
+
+  // Dots
+  const dotsEl=$('launch-dots');dotsEl.innerHTML='';
+  launchAnimes.forEach((_,i)=>{
+    const d=document.createElement('button');d.className='launch-dot'+(i===idx?' active':'');
+    d.onclick=()=>{clearTimeout(launchBgTimer);setLaunchHero(i);startLaunchTimer();};
+    dotsEl.appendChild(d);
+  });
+
+  // Highlight active strip card
+  document.querySelectorAll('.launch-strip-card').forEach((c,i)=>c.classList.toggle('active-strip',i===idx));
+}
+
+function buildLaunchStrip(){
+  const row=$('launch-strip-row');row.innerHTML='';
+  launchAnimes.forEach((a,i)=>{
+    const img=a.coverImage?.extraLarge||a.coverImage?.large||'';
+    const title=a.title?.english||a.title?.romaji||'';
+    const card=document.createElement('div');card.className='launch-strip-card'+(i===0?' active-strip':'');
+    card.innerHTML=`
+      <img src="${img}" alt="${title}" loading="lazy">
+      <div class="launch-strip-card-info">
+        <div class="launch-strip-title">${title}</div>
+        <div class="launch-strip-ep">${a.status==='RELEASING'?'Airing':'Completed'}</div>
+      </div>`;
+    card.onclick=()=>{clearTimeout(launchBgTimer);setLaunchHero(i);startLaunchTimer();};
+    row.appendChild(card);
+  });
+}
+
+function startLaunchTimer(){
+  clearTimeout(launchBgTimer);
+  launchBgTimer=setTimeout(()=>{
+    const next=(launchIdx+1)%launchAnimes.length;
+    setLaunchHero(next);
+    startLaunchTimer();
+  },6000);
+}
+
+function launchWatchNow(){
+  const a=launchAnimes[launchIdx];
+  if(a){enterApp('');setTimeout(()=>openDetail(a),100);}
+  else enterApp('');
+}
+
+function launchEnter(){
+  const q=($('launch-search-input').value||'').trim();
+  $('launch-search-drop').classList.remove('open');
+  enterApp(q||'');
+}
 // ═══════════════════════════════════════════════
 const AL='https://graphql.anilist.co';
 async function alQ(q,v={}){
@@ -1294,7 +1590,7 @@ async function loadMALMeta(anime){
   panel.style.display='block';
   // Clear entire panel contents on every call to prevent duplicate rows
   panel.innerHTML=`
-    <div class="mal-meta-title">Full Metadata <span class="mal-badge">MAL</span><span class="mal-badge" style="background:#02a9ff">AniList</span></div>
+    <div class="mal-meta-title">Full Metadata <span class="mal-badge" style="background:#f47521">CR</span><span class="mal-badge" style="background:#1a3a6e">Funimation</span><span class="mal-badge" style="background:#00b2ff">HIDIVE</span></div>
     <div class="mal-grid" id="mal-grid"><div class="loader" style="grid-column:1/-1;padding:20px"><div class="spin"></div></div></div>
     <div class="mal-scores" id="mal-scores"></div>
     <div style="margin-top:14px"><div class="mal-field-label" style="margin-bottom:7px">Themes / Tags</div><div class="mal-tags" id="mal-tags"></div></div>`;
@@ -1434,28 +1730,66 @@ async function verify2FA(){
   }catch(e){showErr(err,'Invalid code. Try again.');}
 }
 
+// Cloudflare Turnstile token (set by callback when widget completes)
+let _turnstileToken=null;
+function onTurnstileSuccess(token){_turnstileToken=token;}
+
 async function doSignup(){
   const name=$('signup-name').value.trim(),email=$('signup-email').value.trim(),pw=$('signup-password').value;
   const err=$('signup-error');err.classList.remove('show');
   if(!name||!email||!pw)return showErr(err,'Please fill all fields');
   if(pw.length<8)return showErr(err,'Password must be at least 8 characters');
+  // Turnstile check — skip if widget not loaded (dev/localhost) or already verified
+  if(window.turnstile&&!_turnstileToken)return showErr(err,'Please complete the security check');
   try{
     const{db,doc,setDoc,serverTimestamp}=fb();
     const cred=await fb().createUserWithEmailAndPassword(fb().auth,email,pw);
     await fb().updateProfile(cred.user,{displayName:name});
-    await setDoc(doc(db,'users',cred.user.uid),{displayName:name,email,role:'user',status:'active',watchlist:[],favorites:[],progress:{},createdAt:serverTimestamp()});
-    closeModal('auth-modal');toast('Account created! Welcome to Porras 🎉','success');
-  }catch(e){showErr($('signup-error'),friendlyErr(e.code));}
+    // Save to Firestore users collection — same collection for all providers
+    await setDoc(doc(db,'users',cred.user.uid),{
+      displayName:name,email,
+      provider:'email',
+      role:'user',status:'active',
+      watchlist:[],favorites:[],progress:{},
+      createdAt:serverTimestamp()
+    });
+    _turnstileToken=null;
+    if(window.turnstile)window.turnstile.reset('#cf-turnstile');
+    closeModal('auth-modal');toast('Account created! Welcome 🎉','success');
+  }catch(e){
+    showErr($('signup-error'),friendlyErr(e.code));
+    if(window.turnstile)window.turnstile.reset('#cf-turnstile');
+    _turnstileToken=null;
+  }
 }
 
 async function doGoogleLogin(){
-  const{signInWithPopup,auth,GoogleAuthProvider,db,doc,getDoc,setDoc,serverTimestamp}=fb();
+  const{signInWithPopup,auth,GoogleAuthProvider,db,doc,getDoc,setDoc,serverTimestamp,updateDoc}=fb();
   try{
-    const gp=new GoogleAuthProvider();const cred=await signInWithPopup(auth,gp);
-    const ref=doc(db,'users',cred.user.uid);const snap=await getDoc(ref);
-    if(!snap.exists())await setDoc(ref,{displayName:cred.user.displayName,email:cred.user.email,role:'user',status:'active',watchlist:[],favorites:[],progress:{},createdAt:serverTimestamp()});
+    const gp=new GoogleAuthProvider();
+    const cred=await signInWithPopup(auth,gp);
+    const ref=doc(db,'users',cred.user.uid);
+    const snap=await getDoc(ref);
+    if(!snap.exists()){
+      // New Google user — create record in same users collection
+      await setDoc(ref,{
+        displayName:cred.user.displayName||'',
+        email:cred.user.email,
+        photoURL:cred.user.photoURL||'',
+        provider:'google',
+        role:'user',status:'active',
+        watchlist:[],favorites:[],progress:{},
+        createdAt:serverTimestamp()
+      });
+    } else {
+      // Existing user — update photoURL/displayName if changed
+      await updateDoc(ref,{
+        photoURL:cred.user.photoURL||snap.data().photoURL||'',
+        displayName:cred.user.displayName||snap.data().displayName||''
+      });
+    }
     closeModal('auth-modal');toast('Signed in with Google ✓','success');
-  }catch(e){toast('Google sign-in failed','error');}
+  }catch(e){toast('Google sign-in failed. Try again.','error');}
 }
 
 async function signOutUser(){
@@ -1522,6 +1856,16 @@ async function saveProgress(animeId,ep,time,dur){
   if(!currentUser)return;
   userData.progress[animeId]={ep,time:Math.round(time),duration:Math.round(dur),pct:dur>0?Math.round(time/dur*100):0,updatedAt:Date.now()};
   await saveUserData();
+  // Record in local history
+  if(currentAnime&&animeId===currentAnime.id){
+    addToHistory({
+      id:animeId,
+      title:currentAnime.title?.english||currentAnime.title?.romaji||'Unknown',
+      cover:currentAnime.coverImage?.extraLarge||currentAnime.coverImage?.large||'',
+      ep,time:Math.round(time),duration:Math.round(dur),
+      pct:dur>0?Math.round(time/dur*100):0
+    });
+  }
 }
 function getProgress(id){return userData.progress[id]||null;}
 function isInWatchlist(id){return userData.watchlist.some(x=>x.id===id);}
@@ -1552,6 +1896,7 @@ async function trackAnimeView(id,title){
 // ═══════════════════════════════════════════════
 function navigate(page,navEl){
   prevPage=currentPage;currentPage=page;
+  sessionStorage.setItem('porras_page',page);
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=$('page-'+page);if(pg){pg.classList.add('active');$('content').scrollTop=0;}
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -1562,6 +1907,7 @@ function navigate(page,navEl){
   if(page==='schedule')loadSchedule();
   if(page==='watchlist')loadWatchlistPage();
   if(page==='favorites')loadFavoritesPage();
+  if(page==='history')loadHistoryPage();
   if(page==='profile')loadProfilePage();
   if(page==='admin')loadAdminPanel();
   trackPage(page);
@@ -1899,9 +2245,20 @@ function buildEpisodeList(anime){
     const se=streamEps.find(e=>{const n=e.title?.match(/Episode\s*(\d+)/i);return n&&parseInt(n[1])===i;});
     const thumb=se?.thumbnail||anime.coverImage?.large||'';
     const epName=se?.title||`Episode. ${i}`;
-    const crUrl=`https://www.crunchyroll.com/search?q=${encodeURIComponent(anime.title?.english||anime.title?.romaji||'')}`;
     const aId=anime.id;
     const epSafe=epName.replace(/'/g,"\\'");
+
+    // Build official links from AniList externalLinks (real show page URLs)
+    const extLinks=anime.externalLinks||[];
+    const officialPlatforms=['Crunchyroll','Funimation','Hidive','Netflix','Amazon','Bilibili'];
+    const platformColors={Crunchyroll:'#f47521',Funimation:'#410099',Hidive:'#00b2ff',Netflix:'#e50914',Amazon:'#00a8e0',Bilibili:'#fb7299'};
+    const officialLinks=extLinks.filter(l=>officialPlatforms.includes(l.site));
+    // fallback: CR search if no direct link
+    const crFallback=`https://www.crunchyroll.com/search?q=${encodeURIComponent(anime.title?.english||anime.title?.romaji||'')}`;
+
+    const officialRowHtml=officialLinks.length
+      ? officialLinks.map(l=>`<a href="${l.url}" target="_blank" rel="noopener" class="src-cr-btn" style="border-color:${platformColors[l.site]||'#555'};color:${platformColors[l.site]||'#aaa'};background:${platformColors[l.site]||'#333'}22">${l.site} ↗</a>`).join('')
+      : `<a href="${crFallback}" target="_blank" rel="noopener" class="src-cr-btn">Crunchyroll ↗</a>`;
 
     const item=document.createElement('div');
     item.className='ep-item'+(watched?' watched':'');
@@ -1955,12 +2312,10 @@ function buildEpisodeList(anime){
             </button>
           </div>
         </div>
-        <!-- Crunchyroll official -->
+        <!-- Official streaming links -->
         <div class="src-cr-row">
           <span style="font-size:11px;color:var(--text3);font-weight:600;letter-spacing:.4px">OFFICIAL</span>
-          <button class="src-cr-btn" onclick="window.open('${crUrl}','_blank')">
-            Crunchyroll ↗
-          </button>
+          ${officialRowHtml}
         </div>
         <!-- Custom URL -->
         <div style="padding:7px 18px;border-top:1px solid var(--border)">
@@ -2009,24 +2364,142 @@ function setQual(q){qualFilter=q;$('qual-menu').classList.remove('open');$('ep-q
 document.addEventListener('click',e=>{if(!e.target.closest('.qual-dropdown'))$('qual-menu')?.classList.remove('open');});
 
 // ═══════════════════════════════════════════════
-// WATCHLIST / FAVORITES / PROFILE
+// WATCHLIST / FAVORITES / PROFILE / HISTORY
 // ═══════════════════════════════════════════════
 function loadWatchlistPage(filter='all'){
   const g=$('wl-grid');
-  if(!currentUser){g.innerHTML='<div class="empty"><div class="empty-icon">🔒</div><div class="empty-title">Sign in to view your watchlist</div></div>';return;}
+  if(!currentUser){
+    g.innerHTML='<div class="empty"><div class="empty-icon">🔒</div><div class="empty-title">Sign in to view your watchlist</div></div>';
+    return;
+  }
   const items=filter==='all'?userData.watchlist:userData.watchlist.filter(x=>x.status===filter);
   g.innerHTML='';
-  if(!items.length){g.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">Nothing here yet</div><div class="empty-sub">Browse anime and add them to your list</div></div>';return;}
-  items.forEach(item=>{
-    const prog=getProgress(item.id);const pct=prog?.pct||0;
-    const sc={watching:'ws-watching',completed:'ws-completed',planToWatch:'ws-ptw',dropped:'ws-dropped'}[item.status]||'ws-ptw';
-    const sl={watching:'Watching',completed:'Completed',planToWatch:'Plan to Watch',dropped:'Dropped'}[item.status]||item.status;
-    const c=document.createElement('div');c.className='wl-card';
-    c.innerHTML=`<div class="wl-cover"><img src="${item.cover||''}" loading="lazy"><div class="wl-cover-grad"></div></div><div class="wl-body"><div class="wl-card-title">${item.title}</div>${prog?`<div class="wl-prog-bar"><div class="wl-prog-fill" style="width:${pct}%"></div></div><div class="wl-prog-text">EP ${prog.ep} · ${pct}% done</div>`:''}<span class="ws ${sc}">${sl}</span></div>`;
-    c.onclick=()=>openDetailById(item.id);g.appendChild(c);
+  if(!items.length){
+    g.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">Nothing here yet</div><div class="empty-sub">Browse anime and add them to your list</div></div>';
+    return;
+  }
+  // Sort: watching first, then by progress updated
+  const sorted=[...items].sort((a,b)=>{
+    const order={watching:0,planToWatch:1,completed:2,dropped:3};
+    return (order[a.status]||1)-(order[b.status]||1);
   });
+  const frag=document.createDocumentFragment();
+  sorted.forEach(item=>{
+    const prog=getProgress(item.id);
+    const pct=prog?.pct||0;
+    const timeLeft=prog?.duration&&prog?.time?Math.round((prog.duration-prog.time)/60):null;
+    const dotCls={watching:'wsd-watching',completed:'wsd-completed',planToWatch:'wsd-ptw',dropped:'wsd-dropped'}[item.status]||'wsd-ptw';
+    const sl={watching:'Watching',completed:'Completed',planToWatch:'Plan to Watch',dropped:'Dropped'}[item.status]||item.status;
+    const row=document.createElement('div');row.className='wl-row';
+    row.innerHTML=`
+      <div class="wl-row-thumb">
+        <img src="${item.cover||''}" loading="lazy" alt="${item.title}">
+        ${prog&&pct>0?`<div class="wl-row-prog"><div class="wl-row-prog-fill" style="width:${pct}%"></div></div>`:''}
+      </div>
+      <div class="wl-row-info">
+        <div class="wl-row-title">${item.title}</div>
+        <div class="wl-row-meta">
+          <div class="wl-status-dot ${dotCls}"></div>
+          <span>${sl}</span>
+          ${prog?.ep?`<span>· EP ${prog.ep}${item.episodes?'/'+item.episodes:''}</span>`:''}
+        </div>
+        ${prog&&pct>0?`<div class="wl-row-time">${pct}% watched${timeLeft?` · ${timeLeft}m left`:''}</div>`:''}
+      </div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--text3);flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg>`;
+    row.onclick=()=>openDetailById(item.id);
+    frag.appendChild(row);
+  });
+  g.appendChild(frag);
 }
 function switchWlTab(el,f){document.querySelectorAll('.wl-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');loadWatchlistPage(f);}
+
+// ── HISTORY ──
+// History is stored in localStorage as an array of {id, title, cover, ep, pct, time, duration, timestamp}
+function getHistory(){try{return JSON.parse(localStorage.getItem('porras_history')||'[]');}catch(e){return[];}}
+function addToHistory(entry){
+  let h=getHistory();
+  h=h.filter(x=>!(x.id===entry.id&&x.ep===entry.ep)); // remove duplicate
+  h.unshift({...entry,timestamp:Date.now()});
+  h=h.slice(0,100); // cap at 100 entries
+  try{localStorage.setItem('porras_history',JSON.stringify(h));}catch(e){}
+}
+function clearHistory(){
+  try{localStorage.removeItem('porras_history');}catch(e){}
+  loadHistoryPage();
+  toast('History cleared','success');
+}
+
+async function loadHistoryPage(){
+  const body=$('history-body');
+  body.innerHTML='';
+  const h=getHistory();
+  if(!h.length){
+    body.innerHTML='<div class="empty"><div class="empty-icon">🕐</div><div class="empty-title">No watch history yet</div><div class="empty-sub">Start watching anime to track your history</div></div>';
+    return;
+  }
+  // Group by day
+  const groups={};
+  const dayFmt=ts=>{
+    const d=new Date(ts);const today=new Date();const yest=new Date(today);yest.setDate(yest.getDate()-1);
+    if(d.toDateString()===today.toDateString())return'Today';
+    if(d.toDateString()===yest.toDateString())return'Yesterday';
+    return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  };
+  h.forEach(entry=>{
+    const k=dayFmt(entry.timestamp);
+    if(!groups[k])groups[k]=[];
+    groups[k].push(entry);
+  });
+  // Fetch covers for entries without them (batch by unique ids)
+  const missingIds=[...new Set(h.filter(e=>!e.cover).map(e=>e.id))];
+  let fetchedCovers={};
+  if(missingIds.length){
+    try{
+      const animes=await fetchAnimeByIds(missingIds);
+      animes.forEach(a=>{fetchedCovers[a.id]=a.coverImage?.extraLarge||a.coverImage?.large||'';});
+    }catch(e){}
+  }
+  const frag=document.createDocumentFragment();
+  Object.entries(groups).forEach(([day,entries])=>{
+    const sec=document.createElement('div');sec.className='history-day';
+    sec.innerHTML=`<div class="history-day-label">${day}</div>`;
+    const grid=document.createElement('div');grid.className='history-grid';
+    entries.forEach(entry=>{
+      const cover=entry.cover||fetchedCovers[entry.id]||'';
+      const pct=entry.pct||0;
+      const timeLeft=entry.duration&&entry.time?Math.round((entry.duration-entry.time)/60):null;
+      const fmtTime=t=>{const m=Math.floor(t/60);const s=Math.floor(t%60);return`${m}:${s<10?'0':''}${s}`;};
+      const card=document.createElement('div');card.className='history-card';
+      card.innerHTML=`
+        <div class="history-thumb">
+          ${cover?`<img src="${cover}" loading="lazy" alt="${entry.title}">`:''}
+          ${entry.ep?`<div class="history-ep-badge">EP ${entry.ep}</div>`:''}
+          ${pct>0&&pct<100?`<div class="history-time-left">${timeLeft?timeLeft+'m left':pct+'%'}</div>`:''}
+          ${pct>0?`<div class="history-prog"><div class="history-prog-fill" style="width:${pct}%"></div></div>`:''}
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);opacity:0;transition:opacity .2s" class="history-play-ov">
+            <svg viewBox="0 0 24 24" fill="white" width="28" height="28"><polygon points="5 3 19 12 5 21"/></svg>
+          </div>
+        </div>
+        <div class="history-info">
+          <div class="history-title">${entry.title}</div>
+          <div class="history-sub">${entry.ep?`Episode ${entry.ep}`:''}</div>
+        </div>`;
+      card.onmouseenter=()=>card.querySelector('.history-play-ov').style.opacity='1';
+      card.onmouseleave=()=>card.querySelector('.history-play-ov').style.opacity='0';
+      card.onclick=()=>openDetailById(entry.id);
+      grid.appendChild(card);
+    });
+    sec.appendChild(grid);
+    frag.appendChild(sec);
+  });
+  body.appendChild(frag);
+}
+
+// ── MOBILE NAV HELPER ──
+function setMobileNav(page){
+  document.querySelectorAll('.mn-item').forEach(el=>el.classList.remove('active'));
+  const el=$(`mn-${page}`);if(el)el.classList.add('active');
+}
 
 async function loadFavoritesPage(){
   const g=$('fav-grid');
@@ -2297,11 +2770,13 @@ function updateAuthUI(on){
   $('auth-btn').style.display=on?'none':'flex';
   $('user-menu-btn').style.display=on?'flex':'none';
   $('notif-btn').style.display=on?'flex':'none';
-  // Show logged-in nav items
-  ['nav-watchlist','nav-favorites','nav-profile'].forEach(id=>{
-    const el=$(id); if(el) el.style.display=on?'flex':'none';
+  ['nav-watchlist','nav-favorites','nav-profile','nav-history'].forEach(id=>{
+    const el=$(id);if(el)el.style.display=on?'flex':'none';
   });
   $('admin-nav-item').style.display=(on&&userData.role==='admin')?'flex':'none';
+  // Mobile nav badge
+  const b=$('mn-wl-badge');
+  if(b){b.style.display=on?'block':'none';b.textContent=userData.watchlist.length;}
 }
 function refreshUserUI(){
   if(!currentUser){ $('topbar-avatar').textContent='?'; return; }
@@ -2313,7 +2788,12 @@ function refreshUserUI(){
   renderContinueWatching();
   if(userData.role==='admin'){ const a=$('admin-nav-item'); if(a) a.style.display='flex'; }
 }
-function updateWlCount(){ $('wl-count').textContent=userData.watchlist.length; }
+function updateWlCount(){
+  const n=userData.watchlist.length;
+  $('wl-count').textContent=n;
+  const b=$('mn-wl-badge');
+  if(b){b.textContent=n;b.style.display=n>0?'block':'none';}
+}
 function updateSbStats(){} // no-op — sidebar removed
 function handleUserClick(){ if(currentUser) navigate('profile'); else openAuth('login'); }
 function toggleSidebar(){} // no-op — sidebar removed
@@ -2323,9 +2803,23 @@ function toggleSidebar(){} // no-op — sidebar removed
 // ═══════════════════════════════════════════════
 function openAuth(v){switchAuthView(v);openModal('auth-modal');}
 function openModal(id){$(id).classList.add('open');}
-function closeModal(id){$(id).classList.remove('open');}
-document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
-function switchAuthView(v){['login','signup','2fa'].forEach(x=>$('auth-view-'+x).style.display=x===v?'block':'none');}
+function closeModal(id){
+  $(id).classList.remove('open');
+  // Reset Turnstile when auth modal closes
+  if(id==='auth-modal'&&window.turnstile){
+    _turnstileToken=null;
+    window.turnstile.reset('#cf-turnstile');
+  }
+}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m){m.classList.remove('open');if(m.id==='auth-modal'&&window.turnstile){_turnstileToken=null;window.turnstile.reset('#cf-turnstile');}}}));
+function switchAuthView(v){
+  ['login','signup','2fa'].forEach(x=>$('auth-view-'+x).style.display=x===v?'block':'none');
+  // Re-render Turnstile when showing signup
+  if(v==='signup'&&window.turnstile){
+    _turnstileToken=null;
+    window.turnstile.reset('#cf-turnstile');
+  }
+}
 
 // ═══════════════════════════════════════════════
 // UTILS
@@ -2344,6 +2838,16 @@ function toast(msg,type='success'){
 initYearSelect();
 initHome();
 initLaunchFeed();
+
+// Restore session — skip launch if already entered this session
+if(sessionStorage.getItem('porras_entered')){
+  $('launch').style.display='none';
+  const lastPage=sessionStorage.getItem('porras_page');
+  // Restore last page (skip 'detail' — we can't restore without the data)
+  if(lastPage&&lastPage!=='detail'&&$('page-'+lastPage)){
+    navigate(lastPage);
+  }
+}
 
 setInterval(()=>{
   if(currentPage==='home')loadAiringPreview();
