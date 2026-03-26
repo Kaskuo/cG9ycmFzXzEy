@@ -3,293 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nomi</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Launch</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- Background -->
-<div class="bg" id="bg"></div>
-<div class="bg-orb orb1"></div>
-<div class="bg-orb orb2"></div>
-<div class="bg-orb orb3"></div>
-<div class="grain"></div>
+<div class="bg"></div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 1 — Launch Card
-══════════════════════════════════════ -->
 <div class="card" id="launchCard">
   <div class="user-center">
-    <div class="avatar" id="launchAvatar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-      </svg>
-    </div>
-    <span class="welcome-text">Welcome to Nomi</span>
-    <span class="welcome-sub">Your personal streaming universe</span>
+    <div class="avatar"></div>
+    <span>User</span>
   </div>
+
   <div class="buttons">
-    <button class="signup" onclick="showSignup()">
-      <span>Sign Up</span>
-    </button>
-    <button class="login" onclick="showLogin()">
-      <span>Login</span>
-    </button>
+    <button class="signup">Sign Up</button>
+    <button class="login" onclick="showLogin()">Login</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 2 — Login Modal
-══════════════════════════════════════ -->
 <div class="login-modal hidden" id="loginModal">
-  <div class="sheet" id="loginSheet">
+  <div class="login-box fade-in">
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button class="login-btn">Login</button>
 
-    <!-- Handle bar -->
-    <div class="sheet-handle"></div>
+    <div class="divider">or</div>
 
-    <!-- Nomi logo -->
-    <div class="sheet-logo">
-      <div class="logo-mark">N</div>
-      <span class="logo-name">Nomi</span>
-    </div>
-    <p class="sheet-sub">Sign in to continue watching</p>
-
-    <!-- Method picker (Email / Phone / Social) -->
-    <div class="method-picker" id="methodPicker">
-      <div class="method-seg active" data-method="email" onclick="switchMethod('email', this)">
-        <span class="method-icon">✉</span>
-        <span class="method-label">EMAIL</span>
-      </div>
-      <div class="method-seg" data-method="phone" onclick="switchMethod('phone', this)">
-        <span class="method-icon">📱</span>
-        <span class="method-label">PHONE</span>
-      </div>
-      <div class="method-seg" data-method="social" onclick="switchMethod('social', this)">
-        <span class="method-icon">⚡</span>
-        <span class="method-label">SOCIAL</span>
-      </div>
-    </div>
-
-    <!-- Email form -->
-    <div class="auth-form" id="emailForm">
-      <div class="field-group">
-        <div class="field">
-          <span class="field-ico">◎</span>
-          <input type="email" id="loginEmail" placeholder="Email address" autocomplete="email" autocapitalize="none"/>
-        </div>
-        <div class="field-sep"></div>
-        <div class="field">
-          <span class="field-ico">◉</span>
-          <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password"/>
-          <button class="field-toggle" onclick="togglePass('loginPass', this)" type="button">Show</button>
-        </div>
-      </div>
-
-      <!-- Forgot password link -->
-      <div class="form-links">
-        <button class="text-link" onclick="showForgot()" type="button">Forgot password?</button>
-        <button class="text-link accent" onclick="showSignup()" type="button">Create account →</button>
-      </div>
-
-      <div class="error-msg" id="loginError"></div>
-
-      <!-- Cancel / Begin (WWDC25 style) -->
-      <div class="action-row">
-        <button class="btn-cancel" onclick="hideLogin()" type="button">Cancel</button>
-        <button class="btn-begin" id="loginBtn" onclick="doLogin()" type="button">
-          <span class="btn-label">Begin</span>
-          <span class="btn-spin"></span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Phone form -->
-    <div class="auth-form hidden" id="phoneForm">
-      <div class="field-group">
-        <div class="field">
-          <span class="field-ico">🌐</span>
-          <input type="tel" placeholder="+1 (555) 000-0000" autocomplete="tel"/>
-        </div>
-      </div>
-      <div class="action-row">
-        <button class="btn-cancel" onclick="hideLogin()" type="button">Cancel</button>
-        <button class="btn-begin" type="button" onclick="showMFA()">
-          <span class="btn-label">Send Code</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Social form -->
-    <div class="auth-form hidden" id="socialForm">
-      <div class="social-row">
-        <button class="oauth google" onclick="doOAuth('google')" type="button">
-          <svg class="oauth-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          Google
-        </button>
-        <button class="oauth apple" onclick="doOAuth('apple')" type="button">
-          <svg class="oauth-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          Apple
-        </button>
-        <button class="oauth discord" onclick="doOAuth('discord')" type="button">
-          <svg class="oauth-icon" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-          Discord
-        </button>
-      </div>
-      <div class="action-row" style="margin-top:4px">
-        <button class="btn-cancel" onclick="hideLogin()" type="button">Cancel</button>
-      </div>
-    </div>
-
-    <!-- Terms footer -->
-    <p class="sheet-footer">
-      By continuing, you agree to Nomi's
-      <a href="#" onclick="return false">Terms of Service</a>
-      and <a href="#" onclick="return false">Privacy Policy</a>.
-    </p>
-
+    <button class="oauth google">Continue with Google</button>
+    <button class="oauth apple">Continue with Apple</button>
   </div>
 </div>
-
-<!-- ══════════════════════════════════════
-     SCREEN 2b — Sign Up Modal
-══════════════════════════════════════ -->
-<div class="login-modal hidden" id="signupModal">
-  <div class="sheet" id="signupSheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-logo">
-      <div class="logo-mark">N</div>
-      <span class="logo-name">Nomi</span>
-    </div>
-    <p class="sheet-sub">Create your account</p>
-
-    <div class="auth-form" id="signupForm">
-      <div class="field-group">
-        <div class="field">
-          <span class="field-ico">👤</span>
-          <input type="text" id="regName" placeholder="Full name"/>
-        </div>
-        <div class="field-sep"></div>
-        <div class="field">
-          <span class="field-ico">◎</span>
-          <input type="email" id="regEmail" placeholder="Email address"/>
-        </div>
-        <div class="field-sep"></div>
-        <div class="field">
-          <span class="field-ico">◉</span>
-          <input type="password" id="regPass" placeholder="Password (min 8 chars)"/>
-          <button class="field-toggle" onclick="togglePass('regPass', this)" type="button">Show</button>
-        </div>
-        <div class="field-sep"></div>
-        <div class="field">
-          <span class="field-ico">◉</span>
-          <input type="password" id="regPass2" placeholder="Confirm password"/>
-        </div>
-      </div>
-      <div class="form-links">
-        <button class="text-link accent" onclick="showLogin()" type="button">Already have an account →</button>
-      </div>
-      <div class="error-msg" id="regError"></div>
-      <div class="action-row">
-        <button class="btn-cancel" onclick="hideSignup()" type="button">Cancel</button>
-        <button class="btn-begin" onclick="doRegister()" type="button">
-          <span class="btn-label">Create</span>
-          <span class="btn-spin"></span>
-        </button>
-      </div>
-    </div>
-
-    <p class="sheet-footer">
-      By continuing, you agree to Nomi's
-      <a href="#" onclick="return false">Terms of Service</a>
-      and <a href="#" onclick="return false">Privacy Policy</a>.
-    </p>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     SCREEN 2c — Forgot Password
-══════════════════════════════════════ -->
-<div class="login-modal hidden" id="forgotModal">
-  <div class="sheet" id="forgotSheet">
-    <div class="sheet-handle"></div>
-    <button class="back-btn" onclick="backToLogin()" type="button">← Back</button>
-    <p class="sheet-title">Reset Password</p>
-    <p class="sheet-sub">Enter your email — we'll send a reset link.</p>
-    <div class="field-group" style="margin:16px 0">
-      <div class="field">
-        <span class="field-ico">◎</span>
-        <input type="email" id="forgotEmail" placeholder="Email address"/>
-      </div>
-    </div>
-    <div class="error-msg" id="forgotError"></div>
-    <div class="action-row">
-      <button class="btn-cancel" onclick="backToLogin()" type="button">Cancel</button>
-      <button class="btn-begin" onclick="doForgot()" type="button">
-        <span class="btn-label">Send Link</span>
-        <span class="btn-spin"></span>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     SCREEN 3 — MFA
-══════════════════════════════════════ -->
-<div class="login-modal hidden" id="mfaModal">
-  <div class="sheet" id="mfaSheet">
-    <div class="sheet-handle"></div>
-    <p class="sheet-title">Two-Factor Auth</p>
-    <p class="sheet-sub">Enter the 6-digit code sent to your email.</p>
-    <div class="otp-row">
-      <input class="otp-box" maxlength="1" oninput="otpNext(this,0)" data-i="0"/>
-      <input class="otp-box" maxlength="1" oninput="otpNext(this,1)" data-i="1"/>
-      <input class="otp-box" maxlength="1" oninput="otpNext(this,2)" data-i="2"/>
-      <input class="otp-box" maxlength="1" oninput="otpNext(this,3)" data-i="3"/>
-      <input class="otp-box" maxlength="1" oninput="otpNext(this,4)" data-i="4"/>
-      <input class="otp-box" maxlength="1" oninput="otpNext(this,5)" data-i="5"/>
-    </div>
-    <div class="error-msg" id="mfaError"></div>
-    <div class="action-row">
-      <button class="btn-cancel" onclick="hideMFA()" type="button">Cancel</button>
-      <button class="btn-begin" onclick="doMFA()" type="button">
-        <span class="btn-label">Verify</span>
-        <span class="btn-spin"></span>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     SCREEN 4 — Profile Picker
-══════════════════════════════════════ -->
-<div class="login-modal hidden" id="profileModal">
-  <div class="sheet" id="profileSheet">
-    <div class="sheet-handle"></div>
-    <p class="sheet-title">Who's watching?</p>
-    <p class="sheet-sub">Select your profile to continue</p>
-
-    <div class="profile-grid" id="profileGrid">
-      <!-- populated by JS -->
-    </div>
-
-    <div class="device-pill">
-      <span class="device-dot"></span>
-      <span class="device-label">Signed in on <strong id="deviceName">this device</strong></span>
-    </div>
-
-    <div class="action-row" style="margin-top:16px">
-      <button class="btn-cancel" onclick="doLogout()" type="button">Sign Out</button>
-      <button class="btn-begin" style="background:rgba(255,255,255,0.12);color:#fff;box-shadow:none" type="button">Manage</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     TOAST
-══════════════════════════════════════ -->
-<div class="toast" id="toast"></div>
 
 <script src="script.js"></script>
 </body>
