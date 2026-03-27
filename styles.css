@@ -1,163 +1,137 @@
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
-
-body{
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
+*, *::before, *::after {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
 }
 
-.bg{
-  position:absolute;
-  inset:0;
-  background:url('bg.png') center/cover no-repeat;
-  filter: blur(10px) brightness(0.8);
-  z-index:-1;
+/* ── Body — same dark background as launch.html ── */
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(15, 15, 16);
+  overflow: hidden;
 }
 
-/* Card */
-.card{
-  width:320px;
-  padding:30px;
-  border-radius:30px;
-  background:rgba(255,255,255,0.15);
-  backdrop-filter:blur(25px);
-  box-shadow:0 8px 30px rgba(0,0,0,0.2);
-  text-align:center;
-  transition:all .3s ease;
+/* bg div not used — hidden */
+.bg { display: none; }
+
+/* ── Card (hidden on index, kept for completeness) ── */
+.card { display: none; }
+
+/* ── Modal — plain centered flex, no overlay ── */
+.login-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  animation: fadeIn 0.45s ease;
 }
 
-/* Hover/Press */
-.card:hover{transform:scale(1.02);}
-button:active{transform:scale(0.96);}
+.hidden { display: none !important; }
 
-/* User */
-.user-center{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:10px;
-  margin-bottom:20px;
-}
-
-.avatar{
-  width:60px;height:60px;border-radius:50%;
-  background:linear-gradient(#ddd,#bbb);
-}
-
-/* Buttons */
-.buttons{
-  display:flex;
-  gap:10px;
-}
-
-button{
-  flex:1;
-  padding:12px;
-  border-radius:20px;
-  border:none;
-  cursor:pointer;
-  transition:all .2s ease;
-}
-
-.signup{background:rgba(255,255,255,0.3);}
-.login{background:white;border:1px solid #ddd;}
-
-/* ── Modal overlay ─────────────────────── */
-.login-modal{
-  position:absolute;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  backdrop-filter:blur(20px);
-  animation:fadeBg .4s ease;
-}
-
-.hidden{display:none;}
-
-/* ── Login box — white, full-width, stretched ── */
-.login-box{
+/* ── Login box — dark, matches launch palette ── */
+.login-box {
   width: min(420px, calc(100vw - 40px));
-  padding: 28px 24px 22px;
-  border-radius: 18px;
-  background: #ffffff;
+  padding: 30px 26px 24px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 12px 48px rgba(0,0,0,0.18);
+  gap: 11px;
+  box-shadow:
+    0 16px 56px rgba(0, 0, 0, 0.55),
+    0 0 0 0.5px rgba(255,255,255,0.06) inset;
 }
 
-/* Inputs — plain, no prefix icons */
-.login-box input{
+/* ── Inputs ── */
+.login-box input {
   width: 100%;
   padding: 13px 14px;
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  background: #f7f7f7;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.07);
   font-size: 14px;
-  color: #111;
+  color: #fff;
   outline: none;
-  transition: border-color .2s;
+  transition: border-color 0.2s, background 0.2s;
 }
-.login-box input:focus{
-  border-color: #aaa;
-  background: #fff;
+.login-box input:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
 }
-.login-box input::placeholder{color:#aaa;}
+.login-box input::placeholder { color: rgba(255,255,255,0.35); }
 
-/* Forgot password — right-aligned, below Password */
-.forgot{
+/* ── Forgot password ── */
+.forgot {
   display: block;
   text-align: right;
   font-size: 12px;
-  color: #888;
+  color: rgba(255, 255, 255, 0.45);
   text-decoration: none;
   margin-top: -4px;
-  transition: color .2s;
+  transition: color 0.2s;
 }
-.forgot:hover{color:#333;}
+.forgot:hover { color: rgba(255,255,255,0.85); }
 
-/* Login button — full width, black pill */
-.login-btn{
+/* ── Login button — white pill ── */
+.login-btn {
   width: 100%;
   padding: 13px;
   border-radius: 100px;
-  background: #111;
-  color: #fff;
+  background: #ffffff;
+  color: #0a0a0f;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   border: none;
   cursor: pointer;
-  transition: background .2s, transform .15s;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
   flex: unset;
+  box-shadow: 0 4px 18px rgba(255,255,255,0.15);
+  position: relative;
+  overflow: hidden;
 }
-.login-btn:hover{background:#333;}
-.login-btn:active{transform:scale(0.97);}
+.login-btn::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  transition: left 0.5s;
+}
+.login-btn:hover::before { left: 100%; }
+.login-btn:hover {
+  background: #e8e8e8;
+  transform: scale(1.04);
+  box-shadow: 0 6px 24px rgba(255,255,255,0.22);
+}
+.login-btn:active { transform: scale(0.97); }
 
-/* Divider */
-.divider{
-  text-align:center;
-  font-size:12px;
-  color:#bbb;
+/* ── Divider ── */
+.divider {
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255,255,255,0.28);
   position: relative;
   margin: 2px 0;
 }
 .divider::before,
-.divider::after{
-  content:'';
-  position:absolute;
-  top:50%;
-  width:42%;
-  height:1px;
-  background:#e8e8e8;
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 42%;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
 }
-.divider::before{left:0;}
-.divider::after{right:0;}
+.divider::before { left: 0; }
+.divider::after  { right: 0; }
 
-/* OAuth buttons — full width, icon left, monochrome */
-.oauth{
+/* ── OAuth buttons ── */
+.oauth {
   width: 100%;
   display: flex;
   align-items: center;
@@ -165,52 +139,52 @@ button{
   gap: 9px;
   padding: 12px 16px;
   border-radius: 100px;
-  background: #fff;
-  border: 1px solid #ddd;
-  color: #111;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.13);
+  color: rgba(255,255,255,0.88);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background .2s, transform .15s;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
   flex: unset;
 }
-.oauth:hover{background:#f5f5f5;}
-.oauth:active{transform:scale(0.97);}
+.oauth:hover {
+  background: rgba(255,255,255,0.13);
+  transform: scale(1.04);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+}
+.oauth:active { transform: scale(0.97); }
 
-/* Icon — inherits currentColor so stays monochrome */
-.oauth-icon{
+.oauth-icon {
   width: 17px;
   height: 17px;
   flex-shrink: 0;
-  color: #333;
 }
 
-/* Terms */
-.terms{
+/* ── Terms ── */
+.terms {
   font-size: 11px;
   text-align: center;
-  color: #bbb;
+  color: rgba(255,255,255,0.28);
   line-height: 1.5;
   margin-top: 2px;
 }
-.terms a{
-  color: #bbb;
+.terms a {
+  color: rgba(255,255,255,0.38);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.terms a:hover{color:#666;}
+.terms a:hover { color: rgba(255,255,255,0.7); }
 
-/* Animations */
-.fade-in{
-  animation:fadeIn .4s ease;
+/* ── button base ── */
+button {
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
+button:active { transform: scale(0.96); }
 
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(10px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
-@keyframes fadeBg{
-  from{opacity:0;}
-  to{opacity:1;}
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
