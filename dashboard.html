@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KASKUO</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; min-height: 100%;
+    background: rgb(10, 10, 11);
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    color: #fff;
+  }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: linear-gradient(to bottom, rgba(10,10,11,0.95), transparent);
+  }
+
+  .nav-logo {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .user-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 6px 14px 6px 8px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 0.04em;
+  }
+
+  .user-avatar {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    object-fit: cover;
+  }
+
+  .logout-btn {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .logout-btn:hover { color: rgba(255,255,255,0.7); }
+
+  /* ── Hero ── */
+  .hero {
+    height: 70vh;
+    min-height: 480px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 48px 64px;
+    background:
+      linear-gradient(to top, rgb(10,10,11) 0%, transparent 60%),
+      linear-gradient(to right, rgba(10,10,11,0.7) 30%, transparent 70%),
+      radial-gradient(ellipse at 70% 40%, rgba(40,40,80,0.5) 0%, transparent 70%),
+      rgb(10,10,11);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: 'KASKUO';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(80px, 18vw, 200px);
+    font-weight: 900;
+    letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.025);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .hero-content { position: relative; max-width: 520px; }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 12px;
+  }
+
+  .hero-title {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.65;
+    margin-bottom: 24px;
+    max-width: 380px;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-play {
+    display: flex; align-items: center; gap: 8px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-play:hover { background: #e0e0e0; transform: scale(1.03); }
+
+  .btn-info {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-info:hover { background: rgba(255,255,255,0.17); }
+
+  /* ── Content Rows ── */
+  .content {
+    padding: 0 48px 80px;
+  }
+
+  .row { margin-bottom: 40px; }
+
+  .row-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 16px;
+  }
+
+  .cards {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+  .cards::-webkit-scrollbar { display: none; }
+
+  .card-item {
+    flex-shrink: 0;
+    width: 200px;
+    height: 112px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-item:hover {
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.09);
+    transform: scale(1.04);
+  }
+
+  /* ── Coming soon banner ── */
+  .coming-soon {
+    text-align: center;
+    padding: 60px 48px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.2);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Kaskuo</div>
+  <div class="nav-right">
+    <div class="user-pill">
+      <img class="user-avatar" id="userAvatar" src="" alt="">
+      <span id="userName">Loading…</span>
+    </div>
+    <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Featured</div>
+    <h1 class="hero-title">Your Streaming<br>Experience Starts Here</h1>
+    <p class="hero-desc">Content is coming. Your account is ready. Connect your library to start streaming.</p>
+    <div class="hero-btns">
+      <button class="btn-play">▶ Play</button>
+      <button class="btn-info">ⓘ More Info</button>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="row">
+    <div class="row-title">Continue Watching</div>
+    <div class="cards" id="continueRow">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="row-title">Trending Now</div>
+    <div class="cards" id="trendingRow"></div>
+  </div>
+  <div class="row">
+    <div class="row-title">New Releases</div>
+    <div class="cards" id="newRow"></div>
+  </div>
+</div>
+
+<div class="coming-soon">
+  Full content library coming soon · © Kaskuo 2026
+</div>
+
+<script src="https://cdn.auth0.com/js/auth0/9.23/auth0.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+// ── Auth guard: redirect to login if not authenticated ────
+initAuth();
+if (!isAuthenticated()) {
+  window.location.replace('index.html');
+}
+
+// ── Populate user info ────────────────────────────────────
+const user = getUser();
+if (user) {
+  document.getElementById('userName').textContent  = user.name || user.email || 'User';
+  const av = document.getElementById('userAvatar');
+  if (user.picture) { av.src = user.picture; }
+  else { av.style.background = 'rgba(255,255,255,0.2)'; }
+}
+
+// ── Logout ────────────────────────────────────────────────
+function handleLogout() { logout(); }
+
+// ── Placeholder content cards ─────────────────────────────
+function renderPlaceholders(containerId, count) {
+  const container = document.getElementById(containerId);
+  for (let i = 0; i < count; i++) {
+    const card = document.createElement('div');
+    card.className = 'card-item';
+    card.textContent = 'Coming Soon';
+    container.appendChild(card);
+  }
+}
+
+renderPlaceholders('continueRow', 6);
+renderPlaceholders('trendingRow', 8);
+renderPlaceholders('newRow', 8);
+</script>
+</body>
+</html>
