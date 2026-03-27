@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KASKUO</title>
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  }
 
   html, body {
     width: 100%; height: 100%;
@@ -14,253 +18,197 @@
     cursor: none;
   }
 
-  /* ── LAUNCH SCREEN ── */
+  /* ══════════════════════════════════════════════
+     LAUNCH / GLOBE SCREEN
+  ══════════════════════════════════════════════ */
   #launch-screen {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: fixed; inset: 0; z-index: 1;
     transition: opacity 0.5s ease;
   }
-  #launch-screen.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
+  #launch-screen.hidden { opacity: 0; pointer-events: none; }
 
   #globe-wrap {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
   }
 
-  canvas#cobe {
-    display: block;
-    pointer-events: none;
-    touch-action: none;
-  }
+  canvas#cobe { display: block; pointer-events: none; touch-action: none; }
 
-  #enter {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-    cursor: none;
-  }
+  #enter { position: fixed; inset: 0; z-index: 10; cursor: none; }
 
   .copy {
-    position: fixed;
-    bottom: 28px;
-    left: 50%;
+    position: fixed; bottom: 28px; left: 50%;
     transform: translateX(-50%);
     z-index: 20;
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 0.14em;
-    line-height: 1.4em;
-    text-align: center;
-    color: rgb(255, 255, 255);
-    white-space: nowrap;
-    pointer-events: none;
-    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    font-size: 10px; font-weight: 400;
+    letter-spacing: 0.14em; line-height: 1.4em;
+    text-align: center; color: #fff;
+    white-space: nowrap; pointer-events: none;
     text-transform: uppercase;
   }
 
   #dot {
-    position: fixed;
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    pointer-events: none;
-    z-index: 1000;
+    position: fixed; width: 7px; height: 7px;
+    border-radius: 50%; background: rgba(255,255,255,0.9);
+    pointer-events: none; z-index: 1000;
     transform: translate(-50%, -50%);
   }
 
   #flash {
-    position: fixed; inset: 0;
-    background: #fff;
-    z-index: 500;
-    opacity: 0;
-    pointer-events: none;
+    position: fixed; inset: 0; background: #fff;
+    z-index: 500; opacity: 0; pointer-events: none;
     transition: opacity 0.3s ease;
   }
   #flash.on { opacity: 1; }
 
-  /* ── INDEX / LOGIN SCREEN ── */
+  /* ══════════════════════════════════════════════
+     AUTH SCREEN
+  ══════════════════════════════════════════════ */
   #index-screen {
-    position: fixed;
-    inset: 0;
-    z-index: 2;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    justify-content: center;
-    align-items: center;
+    position: fixed; inset: 0; z-index: 2;
+    display: none; opacity: 0;
+    justify-content: center; align-items: center;
     background: rgb(15, 15, 16);
+    transition: opacity 0.5s ease;
+    overflow-y: auto;
   }
-  #index-screen.visible {
-    display: flex;
-    opacity: 1;
-  }
-
-  /* ── styles.css (original, verbatim) ── */
-  #index-screen *, #index-screen *::before, #index-screen *::after {
-    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-  }
+  #index-screen.visible { display: flex; opacity: 1; }
 
   .bg { display: none; }
 
-  .card { display: none; }
-
   .login-modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    width: 100%; padding: 40px 20px;
     animation: fadeIn 0.45s ease;
   }
 
   .hidden { display: none !important; }
 
+  /* ── Auth box ── */
   .login-box {
     width: min(420px, calc(100vw - 40px));
-    padding: 30px 26px 24px;
+    padding: 28px 26px 24px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.11);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.11);
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
-    display: flex;
-    flex-direction: column;
-    gap: 11px;
-    box-shadow:
-      0 16px 56px rgba(0, 0, 0, 0.55),
-      0 0 0 0.5px rgba(255,255,255,0.06) inset;
+    display: flex; flex-direction: column; gap: 11px;
+    box-shadow: 0 16px 56px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(255,255,255,0.06) inset;
   }
 
+  /* ── Tab bar ── */
+  .auth-tabs {
+    display: flex; gap: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px; padding: 4px;
+    margin-bottom: 2px;
+  }
+  .tab-btn {
+    flex: 1; padding: 8px; border-radius: 7px; border: none;
+    background: transparent; color: rgba(255,255,255,0.38);
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    transition: background 0.2s, color 0.2s; letter-spacing: 0.02em;
+  }
+  .tab-btn.active { background: rgba(255,255,255,0.12); color: #fff; }
+
+  /* ── Panels ── */
+  .auth-panel { display: flex; flex-direction: column; gap: 11px; }
+
+  /* ── Inputs ── */
   .login-box input {
-    width: 100%;
-    padding: 13px 14px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.07);
-    font-size: 14px;
-    color: #fff;
-    outline: none;
+    width: 100%; padding: 13px 14px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.07);
+    font-size: 14px; color: #fff; outline: none;
     transition: border-color 0.2s, background 0.2s;
   }
   .login-box input:focus {
-    border-color: rgba(255, 255, 255, 0.35);
-    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.1);
   }
   .login-box input::placeholder { color: rgba(255,255,255,0.35); }
 
+  /* ── Forgot ── */
   .forgot {
-    display: block;
-    text-align: right;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.45);
-    text-decoration: none;
-    margin-top: -4px;
-    transition: color 0.2s;
+    display: block; text-align: right; font-size: 12px;
+    color: rgba(255,255,255,0.45); text-decoration: none;
+    margin-top: -4px; transition: color 0.2s;
   }
   .forgot:hover { color: rgba(255,255,255,0.85); }
 
+  /* ── Primary button ── */
   .login-btn {
-    width: 100%;
-    padding: 13px;
-    border-radius: 100px;
-    background: #ffffff;
-    color: #0a0a0f;
-    font-size: 15px;
-    font-weight: 700;
-    border: none;
-    cursor: pointer;
+    width: 100%; padding: 13px; border-radius: 100px;
+    background: #fff; color: #0a0a0f;
+    font-size: 15px; font-weight: 700; border: none; cursor: pointer;
     transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-    flex: unset;
     box-shadow: 0 4px 18px rgba(255,255,255,0.15);
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
   }
   .login-btn::before {
-    content: '';
-    position: absolute; top: 0; left: -100%;
+    content: ''; position: absolute; top: 0; left: -100%;
     width: 100%; height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
     transition: left 0.5s;
   }
   .login-btn:hover::before { left: 100%; }
-  .login-btn:hover {
-    background: #e8e8e8;
-    transform: scale(1.04);
-    box-shadow: 0 6px 24px rgba(255,255,255,0.22);
-  }
+  .login-btn:hover { background: #e8e8e8; transform: scale(1.04); box-shadow: 0 6px 24px rgba(255,255,255,0.22); }
   .login-btn:active { transform: scale(0.97); }
+  .login-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+  .login-btn:disabled::before { display: none; }
 
+  /* ── Divider ── */
   .divider {
-    text-align: center;
-    font-size: 12px;
-    color: rgba(255,255,255,0.28);
-    position: relative;
-    margin: 2px 0;
+    text-align: center; font-size: 12px;
+    color: rgba(255,255,255,0.28); position: relative; margin: 2px 0;
   }
-  .divider::before,
-  .divider::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    width: 42%;
-    height: 1px;
-    background: rgba(255,255,255,0.1);
+  .divider::before, .divider::after {
+    content: ''; position: absolute; top: 50%;
+    width: 42%; height: 1px; background: rgba(255,255,255,0.1);
   }
-  .divider::before { left: 0; }
-  .divider::after  { right: 0; }
+  .divider::before { left: 0; } .divider::after { right: 0; }
 
+  /* ── OAuth buttons ── */
   .oauth {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    padding: 12px 16px;
-    border-radius: 100px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.13);
-    color: rgba(255,255,255,0.88);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
+    width: 100%; display: flex; align-items: center; justify-content: center;
+    gap: 9px; padding: 12px 16px; border-radius: 100px;
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13);
+    color: rgba(255,255,255,0.88); font-size: 14px; font-weight: 500; cursor: pointer;
     transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
-    flex: unset;
   }
-  .oauth:hover {
-    background: rgba(255,255,255,0.13);
-    transform: scale(1.04);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
-  }
+  .oauth:hover { background: rgba(255,255,255,0.13); transform: scale(1.04); box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
   .oauth:active { transform: scale(0.97); }
+  .oauth-icon { width: 17px; height: 17px; flex-shrink: 0; }
 
-  .oauth-icon {
-    width: 17px;
-    height: 17px;
-    flex-shrink: 0;
+  /* ── reCAPTCHA ── */
+  #recaptcha-container {
+    display: flex; justify-content: center;
+    margin: 2px 0;
+    transform: scale(0.93); transform-origin: center top;
   }
 
+  /* ── Status messages ── */
+  .auth-message {
+    border-radius: 10px; padding: 10px 14px;
+    font-size: 12px; line-height: 1.5;
+    text-align: center; letter-spacing: 0.01em;
+  }
+  .auth-message.error {
+    background: rgba(255,70,70,0.12); border: 1px solid rgba(255,70,70,0.22);
+    color: rgba(255,130,130,0.95);
+  }
+  .auth-message.success {
+    background: rgba(60,200,110,0.12); border: 1px solid rgba(60,200,110,0.22);
+    color: rgba(80,210,130,0.95);
+  }
+
+  /* ── Terms ── */
   .terms {
-    font-size: 11px;
-    text-align: center;
-    color: rgba(255,255,255,0.28);
-    line-height: 1.5;
-    margin-top: 2px;
+    font-size: 11px; text-align: center;
+    color: rgba(255,255,255,0.28); line-height: 1.5; margin-top: 2px;
   }
-  .terms a {
-    color: rgba(255,255,255,0.38);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
+  .terms a { color: rgba(255,255,255,0.38); text-decoration: underline; text-underline-offset: 2px; }
   .terms a:hover { color: rgba(255,255,255,0.7); }
 
   button { cursor: pointer; transition: all 0.2s ease; }
@@ -274,7 +222,9 @@
 </head>
 <body>
 
-<!-- ── LAUNCH SCREEN ── -->
+<!-- ══════════════════════════════════════════════
+     LAUNCH / GLOBE SCREEN
+══════════════════════════════════════════════ -->
 <div id="launch-screen">
   <div id="globe-wrap">
     <canvas id="cobe"></canvas>
@@ -283,159 +233,258 @@
   <p class="copy">© Kaskuo 2026. All rights reserved.</p>
 </div>
 
-<!-- ── INDEX / LOGIN SCREEN ── -->
+<!-- ══════════════════════════════════════════════
+     AUTH SCREEN
+══════════════════════════════════════════════ -->
 <div id="index-screen">
   <div class="bg"></div>
 
-  <div class="card" id="launchCard" style="display:none">
-    <div class="user-center">
-      <img class="avatar" src="avatar.png" alt="User">
-      <span>User</span>
-    </div>
-    <div class="buttons">
-      <button class="signup">Sign Up</button>
-      <button class="login" onclick="showLogin()">Login</button>
-    </div>
-  </div>
-
   <div class="login-modal" id="loginModal">
-    <div class="login-box fade-in">
-      <input type="email" placeholder="Email">
-      <input type="password" placeholder="Password">
-      <a class="forgot" href="#">Forgot password?</a>
-      <button class="login-btn">Login</button>
-      <div class="divider">or</div>
+    <div class="login-box">
 
-      <button class="oauth google">
-        <svg class="oauth-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-        </svg>
-        Continue with Google
-      </button>
+      <!-- Tab toggle -->
+      <div class="auth-tabs">
+        <button class="tab-btn active" id="tabLogin"  onclick="switchTab('login')">Log In</button>
+        <button class="tab-btn"        id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+      </div>
 
-      <button class="oauth apple">
-        <svg class="oauth-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" fill="#fff"/>
-        </svg>
-        Continue with Apple
-      </button>
+      <!-- ── LOGIN PANEL ── -->
+      <div id="panelLogin" class="auth-panel">
+        <input type="email"    id="loginEmail"    placeholder="Email"    autocomplete="email">
+        <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+        <a class="forgot" href="#">Forgot password?</a>
+        <button class="login-btn" id="loginBtn" onclick="handleLogin()">Log In</button>
+        <div class="divider">or</div>
 
-      <p class="terms">By continuing, you agree to <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+        <button class="oauth google" onclick="handleGoogleLogin()">
+          <svg class="oauth-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Continue with Google
+        </button>
+
+        <button class="oauth apple" onclick="handleAppleLogin()">
+          <svg class="oauth-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" fill="#fff"/>
+          </svg>
+          Continue with Apple
+        </button>
+
+        <p class="terms">By continuing, you agree to <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+      </div>
+
+      <!-- ── SIGN UP PANEL ── -->
+      <div id="panelSignup" class="auth-panel" style="display:none">
+        <input type="email"    id="signupEmail"    placeholder="Email"                    autocomplete="email">
+        <input type="password" id="signupPassword" placeholder="Password (min. 8 chars)"  autocomplete="new-password">
+        <input type="password" id="signupConfirm"  placeholder="Confirm Password"          autocomplete="new-password">
+
+        <div id="recaptcha-container"></div>
+
+        <button class="login-btn" id="signupBtn" onclick="handleSignup()">Create Account</button>
+        <div class="divider">or</div>
+
+        <button class="oauth google" onclick="handleGoogleLogin()">
+          <svg class="oauth-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Continue with Google
+        </button>
+
+        <button class="oauth apple" onclick="handleAppleLogin()">
+          <svg class="oauth-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" fill="#fff"/>
+          </svg>
+          Continue with Apple
+        </button>
+
+        <p class="terms">By continuing, you agree to <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+      </div>
+
+      <!-- Status message (shared by both panels) -->
+      <div id="authMessage" class="auth-message" style="display:none"></div>
+
     </div>
   </div>
 </div>
 
-<!-- Custom cursor & flash -->
 <div id="dot"></div>
 <div id="flash"></div>
 
+<!-- ══════════════════════════════════════════════
+     SCRIPTS  (load order matters)
+══════════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/cobe@0.6.3/dist/cobe.umd.js"></script>
+<script src="https://cdn.auth0.com/js/auth0/9.23/auth0.min.js"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+
 <script>
-// ── Cursor ──────────────────────────────────────────────
+/* ── Cursor ─────────────────────────────────────────────── */
 const dot = document.getElementById('dot');
 document.addEventListener('mousemove', e => {
   dot.style.left = e.clientX + 'px';
   dot.style.top  = e.clientY + 'px';
 });
 
-// ── Transition: launch → index ──────────────────────────
+/* ── Globe → Auth transition ────────────────────────────── */
 document.getElementById('enter').addEventListener('click', () => {
   const flash = document.getElementById('flash');
   flash.classList.add('on');
-
   setTimeout(() => {
-    // Hide launch screen
-    const launchScreen = document.getElementById('launch-screen');
-    launchScreen.classList.add('hidden');
-
-    // Show index screen
-    const indexScreen = document.getElementById('index-screen');
-    indexScreen.style.display = 'flex';
-
-    // Fade out flash and fade in index
-    setTimeout(() => {
-      flash.classList.remove('on');
-      indexScreen.classList.add('visible');
-    }, 50);
+    document.getElementById('launch-screen').classList.add('hidden');
+    const screen = document.getElementById('index-screen');
+    screen.style.display = 'flex';
+    setTimeout(() => { flash.classList.remove('on'); screen.classList.add('visible'); }, 50);
   }, 320);
 });
 
-// ── Login modal toggle (original script.js) ─────────────
-function showLogin() {
-  const card  = document.getElementById('launchCard');
-  const modal = document.getElementById('loginModal');
-  card.style.opacity   = '0';
-  card.style.transform = 'scale(0.95)';
-  setTimeout(() => {
-    card.style.display = 'none';
-    modal.classList.remove('hidden');
-  }, 200);
+/* ── Auth0 init ─────────────────────────────────────────── */
+window.addEventListener('load', () => {
+  try { initAuth(); } catch (e) { console.warn('[Kaskuo Auth]', e.message); }
+});
+
+/* ── reCAPTCHA ──────────────────────────────────────────── */
+let _recaptchaRendered = false;
+let _recaptchaToken    = null;
+
+function _renderRecaptcha() {
+  if (_recaptchaRendered || typeof grecaptcha === 'undefined') return;
+  try {
+    grecaptcha.render('recaptcha-container', {
+      sitekey:            CONFIG.recaptcha.siteKey,
+      theme:              'dark',
+      callback:           (token) => { _recaptchaToken = token; },
+      'expired-callback': ()      => { _recaptchaToken = null; }
+    });
+    _recaptchaRendered = true;
+  } catch (e) { console.warn('[reCAPTCHA]', e); }
 }
 
-// ── COBE globe ──────────────────────────────────────────
+/* ── Tab switching ──────────────────────────────────────── */
+function switchTab(tab) {
+  const isLogin = (tab === 'login');
+  document.getElementById('tabLogin').classList.toggle('active',  isLogin);
+  document.getElementById('tabSignup').classList.toggle('active', !isLogin);
+  document.getElementById('panelLogin').style.display  = isLogin ? 'flex' : 'none';
+  document.getElementById('panelSignup').style.display = isLogin ? 'none' : 'flex';
+  hideMessage();
+  if (!isLogin) setTimeout(_renderRecaptcha, 80);
+}
+
+/* ── Messages ───────────────────────────────────────────── */
+function showMessage(text, type = 'error') {
+  const el = document.getElementById('authMessage');
+  el.textContent = text; el.className = 'auth-message ' + type; el.style.display = 'block';
+}
+function hideMessage() { document.getElementById('authMessage').style.display = 'none'; }
+
+/* ── Login ──────────────────────────────────────────────── */
+async function handleLogin() {
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  if (!email || !password) { showMessage('Please fill in all fields.'); return; }
+
+  const btn = document.getElementById('loginBtn');
+  btn.textContent = 'Logging in…'; btn.disabled = true; hideMessage();
+
+  try {
+    await loginWithEmail(email, password);
+    // auth0-js triggers redirect on success — code below not reached
+  } catch (err) {
+    showMessage(err.message);
+    btn.textContent = 'Log In'; btn.disabled = false;
+  }
+}
+
+/* ── Sign Up ─────────────────────────────────────────────── */
+async function handleSignup() {
+  const email    = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const confirm  = document.getElementById('signupConfirm').value;
+
+  if (!email || !password || !confirm) { showMessage('Please fill in all fields.'); return; }
+  if (password !== confirm)             { showMessage('Passwords do not match.'); return; }
+  if (password.length < 8)             { showMessage('Password must be at least 8 characters.'); return; }
+  if (!_recaptchaToken)                 { showMessage('Please complete the reCAPTCHA check.'); return; }
+
+  const btn = document.getElementById('signupBtn');
+  btn.textContent = 'Creating account…'; btn.disabled = true; hideMessage();
+
+  try {
+    await signupWithEmail(email, password, _recaptchaToken);
+    showMessage('Account created! Check your email to verify, then log in.', 'success');
+    btn.textContent = '✓ Account Created';
+
+    setTimeout(() => {
+      switchTab('login');
+      document.getElementById('loginEmail').value = email;
+      btn.textContent = 'Create Account'; btn.disabled = false;
+    }, 3000);
+
+  } catch (err) {
+    showMessage(err.message);
+    btn.textContent = 'Create Account'; btn.disabled = false;
+    if (_recaptchaRendered) { try { grecaptcha.reset(); } catch(_) {} _recaptchaToken = null; }
+  }
+}
+
+/* ── Social ─────────────────────────────────────────────── */
+function handleGoogleLogin() { loginWithGoogle(); }
+function handleAppleLogin()  { loginWithApple();  }
+
+/* ── COBE Globe ─────────────────────────────────────────── */
 const canvas = document.getElementById('cobe');
 const SIZE   = Math.min(window.innerWidth, window.innerHeight) * 0.9;
-canvas.width  = SIZE;
-canvas.height = SIZE;
-canvas.style.width  = SIZE + 'px';
-canvas.style.height = SIZE + 'px';
+canvas.width  = SIZE; canvas.height = SIZE;
+canvas.style.width = SIZE + 'px'; canvas.style.height = SIZE + 'px';
 
-let phi   = 0;
-let globe = null;
+let phi = 0, globe = null;
 
-function init() {
+function initGlobe() {
   if (typeof createGlobe === 'undefined') return;
-
   globe = createGlobe(canvas, {
     devicePixelRatio: Math.min(window.devicePixelRatio, 2),
     width:  SIZE * Math.min(window.devicePixelRatio, 2),
     height: SIZE * Math.min(window.devicePixelRatio, 2),
-    phi:    0,
-    theta:  0.15,
-    dark:           1,
-    diffuse:        1.2,
-    scale:          1,
-    mapSamples:     16000,
-    mapBrightness:  6,
-    baseColor:      [0.05, 0.05, 0.12],
-    markerColor:    [1, 1, 1],
-    glowColor:      [0.15, 0.15, 0.3],
+    phi: 0, theta: 0.15,
+    dark: 1, diffuse: 1.2, scale: 1, mapSamples: 16000, mapBrightness: 6,
+    baseColor: [0.05,0.05,0.12], markerColor: [1,1,1], glowColor: [0.15,0.15,0.3],
     markers: [
       { location: [40.7128, -74.006],   size: 0.04 },
-      { location: [51.5074, -0.1278],   size: 0.04 },
+      { location: [51.5074,  -0.1278],  size: 0.04 },
       { location: [35.6762, 139.6503],  size: 0.04 },
       { location: [1.3521,  103.8198],  size: 0.03 },
-      { location: [-33.8688, 151.2093], size: 0.03 },
+      { location: [-33.8688,151.2093],  size: 0.03 },
       { location: [48.8566,   2.3522],  size: 0.03 },
       { location: [55.7558,  37.6173],  size: 0.03 },
       { location: [19.4326, -99.1332],  size: 0.03 },
       { location: [28.6139,  77.2090],  size: 0.03 },
       { location: [31.2304, 121.4737],  size: 0.03 },
-      { location: [37.7749, -122.4194], size: 0.03 },
-      { location: [-23.5505, -46.6333], size: 0.03 },
+      { location: [37.7749,-122.4194],  size: 0.03 },
+      { location: [-23.5505,-46.6333],  size: 0.03 },
       { location: [25.2048,  55.2708],  size: 0.03 },
-      { location: [-26.2041,  28.0473], size: 0.02 },
-      { location: [43.6532,  -79.3832], size: 0.02 },
-      { location: [13.7563,  100.5018], size: 0.02 },
+      { location: [-26.2041, 28.0473],  size: 0.02 },
+      { location: [43.6532, -79.3832],  size: 0.02 },
+      { location: [13.7563, 100.5018],  size: 0.02 },
     ],
-    onRender: (state) => {
-      state.phi   = phi;
-      state.theta = 0.15;
-      phi += 0.003;
-    }
+    onRender: (state) => { state.phi = phi; state.theta = 0.15; phi += 0.003; }
   });
 }
 
-setTimeout(init, 100);
+setTimeout(initGlobe, 100);
 
 window.addEventListener('resize', () => {
   if (!globe) return;
   const s = Math.min(window.innerWidth, window.innerHeight) * 0.9;
-  canvas.style.width  = s + 'px';
-  canvas.style.height = s + 'px';
+  canvas.style.width = s + 'px'; canvas.style.height = s + 'px';
 });
 </script>
 </body>
