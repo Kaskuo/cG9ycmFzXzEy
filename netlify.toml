@@ -1,0 +1,24 @@
+[build]
+  functions = "netlify/functions"
+  publish   = "."
+
+[functions]
+  # Uses esbuild for faster bundling. Switch to "zisi" if you hit issues.
+  node_bundler = "esbuild"
+
+# Security headers for every page
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options            = "DENY"
+    X-Content-Type-Options     = "nosniff"
+    Referrer-Policy            = "strict-origin-when-cross-origin"
+    Permissions-Policy         = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy    = "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdn.auth0.com www.google.com www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: *.auth0.com lh3.googleusercontent.com; connect-src 'self' *.auth0.com www.google.com; frame-src www.google.com;"
+
+# SPA — redirect everything not matching a file back to index.html
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+  force  = false
