@@ -1,0 +1,17 @@
+{
+  "name": "kaskuo",
+  "version": "1.0.0",
+  "description": "Kaskuo Streaming Platform",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev":   "netlify dev",
+    "build": "echo 'Static site — no build step required'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  }
+}
